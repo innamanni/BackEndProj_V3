@@ -1,0 +1,11 @@
+include "db_util.php";
+include "DAO/AddressDAO.php";
+include "DAO/StateDAO.php";
+include "DTO/AddressDTO.php";
+include "DTO/StateDTO.php";
+include 'DTO/ResultDTO.php';
+$address_id_list = $_GET['deleteId'];
+$address_id = explode(',', $address_id_list);
+$con = db_connect();
+$result = deleteAddress($con, $address_id);
+echo $result;
