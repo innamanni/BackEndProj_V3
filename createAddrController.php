@@ -3,9 +3,9 @@
 //header('Content-type:application/json; charset=utf-8');
 include "programManager.php";
 include "db_util.php";
+include "DTO/AddressDTO.php";
 include "DAO/AddressDAO.php";
 include "DAO/StateDAO.php";
-include "DTO/AddressDTO.php";
 include "DTO/StateDTO.php";
 include 'DTO/ResultDTO.php';
 
@@ -18,8 +18,15 @@ $state_id = $data_back->{"state"};
 $zip = $data_back->{"zip"};
 $address_id = " ";
 
+$tempAddressDTO = new AddressDTO($street1,
+				$street2,
+				$city,
+				$state_id,
+				$zip,
+				$address_id);
+
 $progrManager = new programManager();
 $progrManager->openConn();
-$progrManager->createAddr($street1,$street2,$city,$state_id,$zip,$address_id);
+$progrManager->createAddr($tempAddressDTO);
 $progrManager->closeConn();
 ?>

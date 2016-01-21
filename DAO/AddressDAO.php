@@ -1,4 +1,37 @@
 <?php
+class AddressDAO {
+	var $con;
+	var $dto;
+	var $address_id;
+	function getID()
+	{
+		return $this->address_id;
+	}
+	function setID($tempID)
+	{
+		$this->address_id=$tempID;
+	}
+	function getDTO()
+	{
+		return $this->dto;
+	}
+	function setDTO($tempDTO)
+	{
+		$this->dto=$tempDTO;
+	}
+	function getCon()
+	{
+		return $this->con;
+	}
+	function setCon($tempCon)
+	{
+		$this->con=$tempCon;
+	}
+	function __construct($dbCon, $addrDTO, $addrID) {
+		$this->setCon($dbCon);
+		$this->setDTO($addrDTO); 
+		$this->setID($addrID); 
+	}
 	function readAddressList($con)
 	{
 		$addressList = array();
@@ -117,4 +150,5 @@
 			}
 			return $address_id;
 	}
+}
 ?>

@@ -9,15 +9,11 @@ class ProgramManager
 		$this->db = new Database(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
 		$this->con = $this->db->db_connect();
 	}
-	function createAddr($street1,$street2,$city,$state_id,$zip,$address_id) {
-		$tempAddressDTO = new AddressDTO($street1,
-						$street2,
-						$city,
-						$state_id,
-						$zip,
-						$address_id);
+	function createAddr($tempAddressDTO) {
+		$addrID = " ";
 		$this->addr_dto = $tempAddressDTO;
-		$result = createAddress($con, $tempAddressDTO);
+		$this->addrDAO = new AddressDAO($this->con, $this->addr_dto, $addrID);
+		$result = $this->addrDAO->createAddress($this->con, $tempAddressDTO);
 		$return = new ResultDTO($result, "CREATED");
 		$json = json_encode($return);
 		echo $json;
