@@ -1,15 +1,15 @@
 <?php
 //header('Content-type: application/json');
-
+include "programManager.php";
 include "db_util.php";
 include "DAO/AddressDAO.php";
 include "DAO/StateDAO.php";
 include "DTO/AddressDTO.php";
 include "DTO/StateDTO.php";
-
-$con = db_connect();
-$addressesList = readAddressList($con);
-$json = json_encode($addressesList);
-echo $json;
-db_close($con);
+include 'DTO/ResultDTO.php';
+//include 'DTO/BaseDTO.php';
+$progrManager = new programManager();
+$progrManager->openConn();
+$progrManager->readAddr();
+$progrManager->closeConn();
 ?>

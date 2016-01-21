@@ -1,5 +1,6 @@
 <?php
-class AddressDTO
+require_once 'DTO/BaseDTO.php';
+class AddressDTO extends BaseDTO
 {
 	var $address_id;
 	var $street1;

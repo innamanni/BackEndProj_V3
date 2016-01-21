@@ -1,5 +1,6 @@
 <?php
-class AddressDAO {
+require_once 'DAO/BaseDAO.php';
+class AddressDAO extends BaseDAO{
 	var $con;
 	var $dto;
 	var $address_id;
@@ -27,10 +28,10 @@ class AddressDAO {
 	{
 		$this->con=$tempCon;
 	}
-	function __construct($dbCon, $addrDTO, $addrID) {
-		$this->setCon($dbCon);
-		$this->setDTO($addrDTO); 
-		$this->setID($addrID); 
+	function __construct() {
+		//$this->setCon($dbCon);
+		//$this->setDTO($addrDTO); 
+		//$this->setID($addrID); 
 	}
 	function readAddressList($con)
 	{

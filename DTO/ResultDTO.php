@@ -1,5 +1,6 @@
 <?php
-class ResultDTO
+require_once 'DTO/BaseDTO.php';
+class ResultDTO extends BaseDTO
 {
 	var $result;
 	var $message;

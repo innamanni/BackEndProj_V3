@@ -1,5 +1,6 @@
 <?php
-class StateDTO
+require_once 'DTO/BaseDTO.php';
+class StateDTO extends BaseDTO
 {
 	var $id;
 	var $abbr;
