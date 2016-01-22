@@ -9,6 +9,18 @@ class ProgramManager
 		$this->db = new Database(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
 		$this->con = $this->db->db_connect();
 	}
+	function createPerson($tempPersonDTO) {
+		$this->person_dto = $tempPersonDTO;
+		$this->personDAO = new PersonDAO();
+		$result = $this->personDAO->createPerson($this->con, $tempPersonDTO);
+		$return = new ResultDTO($result, "CREATED");
+		$json = json_encode($return);
+		echo $json;
+	}
+	
+	
+	
+	
 	function createAddr($tempAddressDTO) {
 		$this->addr_dto = $tempAddressDTO;
 		$this->addrDAO = new AddressDAO();
@@ -17,6 +29,7 @@ class ProgramManager
 		$json = json_encode($return);
 		echo $json;
 	}
+	
 	function deleteAddr($address_id) {
 		$this->addrDAO = new AddressDAO();
 		$result = $this->addrDAO->deleteAddress($this->con, $address_id);
