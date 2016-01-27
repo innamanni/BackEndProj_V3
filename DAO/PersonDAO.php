@@ -28,6 +28,10 @@ class PersonDAO extends BaseDAO{
 	{
 		$this->con=$tempCon;
 	}
+	public static function getPersonDTO($tempID, $tempLname, $tempFname, $tempEmail, $tempPhoneDTO, $tempAddrDTO){
+		$tempPersonDTO = new PersonDTO($tempID, $tempLname, $tempFname, $tempEmail, $tempPhoneDTO, $tempAddrDTO);
+		return $tempPersonDTO;
+	}
 	function __construct() {
 		//$this->setCon($dbCon);
 		//$this->setDTO($personDTO); 
@@ -86,18 +90,14 @@ class PersonDAO extends BaseDAO{
 		$sql = "select * from person, phone, phone_type where person.person_id = phone.person_id and phone.phone_type_id = phone_type.phone_type_id;";
 		foreach ($con->query($sql) as $row)
 		{	
-			$tempPhoneDTO = new PhoneDTO($row['phone_id'], 
-						$row['person_id'], 
-						$row['phone_type_id'], 
-						$row['phone_number'], 
-						$row['phone_type']);
-
-			$tempPersonDTO = new PersonDTO(
-						$row['person_id'],
+			$tempAddressDTO = AddressDAO::getAddrDTO($row['street1'], $row['street2'], $row['city'], $row['state_id'], $row['zip'], $row['address_id'], $row['person_id']);
+			$tempPhoneDTO = PersonDAO::getPhoneDTO($row['phone_id'], $row['person_id'], $row['phone_type_id'], $row['phone_number'], $row['phone_type']);
+			$tempPersonDTO = getPersonDTO($row['person_id'],
 						$row['l_name'],
 						$row['f_name'],
 						$row['email_addr'],
-						$tempPhoneDTO);
+						$tempPhoneDTO, 
+						$tempAddressDTO);
 						
 			$personList[count($personList)] = $tempPersonDTO;
 		}

@@ -1,4 +1,9 @@
 <?php
+class StateDAO extends BaseDAO {
+	public static function getStateDTO($state_id, $state_abbr, $state_descr){
+		$tempStateDTO = new StateDTO($state_id, $state_abbr, $state_descr);
+		return $tempStateDTO;
+	}
 	function readStateList($con)
 	{
 		$stateList = array();
@@ -19,4 +24,5 @@
 		$state_id = $con->query($sql);
 		return $state_id;
 	}
+}
 ?>

@@ -47,13 +47,22 @@ class PersonDTO extends BaseDTO
 	{
 		$this->phoneDTO=$tempPhoneDTO;
 	}
-	function __construct($tempID, $tempLname, $tempFname, $tempEmail, $tempPhoneDTO)
+	function getAddrDTO()
+	{
+		return $this->addrDTO;
+	}
+	function setAddrDTO($tempAddrDTO)
+	{
+		$this->addrDTO=$tempAddrDTO;
+	}
+	function __construct($tempID, $tempLname, $tempFname, $tempEmail, $tempPhoneDTO, $tempAddrDTO)
 	{
 		$this->setID($tempID);
 		$this->setLname($tempLname); 
 		$this->setFname($tempFname); 
 		$this->setEmail($tempEmail); 
 		$this->setPhoneDTO($tempPhoneDTO);
+		$this->setAddrDTO($tempAddrDTO);
 	}
 }
 ?>

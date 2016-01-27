@@ -28,6 +28,10 @@ class AddressDAO extends BaseDAO{
 	{
 		$this->con=$tempCon;
 	}
+	public static function getAddressDTO($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID){
+		$tempAddrDTO = new AddressDTO($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID);
+		return $tempAddrDTO;
+	}
 	function __construct() {
 		//$this->setCon($dbCon);
 		//$this->setDTO($addrDTO); 
@@ -45,7 +49,8 @@ class AddressDAO extends BaseDAO{
 						$row['city'],
 						$row['abbr'],
 						$row['zip'],
-						$row['address_id']);
+						$row['address_id'],
+						$row['person_id']);
 						//echo "<br><br>count($addressList) is " . count($addressList) . "<br><br>";
 			$addressList[count($addressList)] = $tempAddressDTO;
 		}
@@ -122,7 +127,8 @@ class AddressDAO extends BaseDAO{
 						$row['city'],
 						$row['state_id'],
 						$row['zip'],
-						$row['address_id']);
+						$row['address_id'],
+						$row['person_id']);
 		}
 		return $tempAddressDTO;
 	}
