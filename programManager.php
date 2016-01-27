@@ -10,12 +10,27 @@ class ProgramManager
 		$this->con = $this->db->db_connect();
 	}
 	function createPerson($tempPersonDTO) {
-		$this->person_dto = $tempPersonDTO;
-		$this->personDAO = new PersonDAO();
-		$result = $this->personDAO->createPerson($this->con, $tempPersonDTO);
-		$return = new ResultDTO($result, "CREATED");
-		$json = json_encode($return);
-		echo $json;
+		try{
+			self::openConn();
+			$this->con->beginTransaction();
+			$this->person_dto = $tempPersonDTO;
+			$person_id = PersonDAO::createPerson($this->con, $tempPersonDTO);
+			$phoneDTO = $this->person_dto->getPhoneDTO();
+			$phoneDTO->setPersonID($person_id);
+			$addressDTO = $this->person_dto->getAddrDTO();
+			$addressDTO->setPersonID($person_id);
+			$phone_id = PhoneDAO::createPhone($this->con, $phoneDTO);
+			$address_id = AddressDAO::createAddress($this->con, $addressDTO);
+			$return = new ResultDTO($address_id, "CREATED");
+			$json = json_encode($return);
+			echo $json;
+			$this->con->commit();
+			self::closeConn();
+		}
+		catch(PDOException $e)
+		{
+			$this->con->rollBack();
+		}
 	}
 	function readPerson(){
 		$this->personDAO = new PersonDAO();

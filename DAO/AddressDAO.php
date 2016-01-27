@@ -56,31 +56,29 @@ class AddressDAO extends BaseDAO{
 		}
 		return $addressList;
 	}
-	function createAddress($con, $dto) 
+	public static function createAddress($con, $dto) 
 	{
-			try {
-				$street1 = $dto->getStreet1();
-				$street2 = $dto->getStreet2();
-				$city = $dto->getCity();
-				$state_id = $dto->getState();
-				$zip = $dto->getZip();
-				$stmt = $con->prepare("INSERT INTO address (street1, street2, city, state_id, zip) VALUES (:street1, :street2, :city, :state_id, :zip)");
-				$stmt->bindParam(':street1', $street1);
-				$stmt->bindParam(':street2', $street2);
-				$stmt->bindParam(':city', $city);
-				$stmt->bindParam(':state_id', $state_id);
-				$stmt->bindParam(':zip', $zip);
-				$stmt->execute();
-				//echo '<br><br>Hello from AddressDAO with PDO prepared statement<br><br>';
-				$address_id = $con->lastInsertId();
-				//echo 'address_id: ' . $address_id . '<br><br>';
-				//var_dump($dto);
-			}
-			catch(PDOException $e)
-			{
-				//echo "Error: " . $e->getMessage();
-			}
-			return $address_id;
+		$person_id = $dto->getPersonID();
+		//$address_id = "";
+		$street1 = $dto->getStreet1();
+		$street2 = $dto->getStreet2();
+		$city = $dto->getCity();
+		$state_id = $dto->getStateID();
+		$zip = $dto->getZip();
+		
+		$stmt = $con->prepare("INSERT INTO address (street1, street2, city, state_id, zip, person_id) VALUES (:street1, :street2, :city, :state_id, :zip, :person_id)");
+		
+		$stmt->bindParam(':street1', $street1);
+		$stmt->bindParam(':street2', $street2);
+		$stmt->bindParam(':city', $city);
+		$stmt->bindParam(':state_id', $state_id);
+		$stmt->bindParam(':zip', $zip);
+		$stmt->bindParam(':person_id', $person_id);
+		
+		$stmt->execute();
+		//$address_id = $con->lastInsertId();
+
+		return $person_id;
 	}
 	function deleteAddress($con, $address_id)
 	{

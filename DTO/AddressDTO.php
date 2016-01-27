@@ -2,8 +2,8 @@
 require_once 'DTO/BaseDTO.php';
 class AddressDTO extends BaseDTO
 {
-	var $address_id = "";
-	var $person_id = "";
+	//var $address_id = "";
+	//var $person_id = "";
 	var $street1;
 	var $street2 = "";
 	var $city;
@@ -17,7 +17,7 @@ class AddressDTO extends BaseDTO
 	
 	function setPersonID($tempPersonID)
 	{
-		$this->pertson_id=$tempPersonID;
+		$this->person_id=$tempPersonID;
 	}
 	
 	function getAddrID()

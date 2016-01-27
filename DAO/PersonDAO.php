@@ -37,77 +37,20 @@ class PersonDAO extends BaseDAO{
 		//$this->setDTO($personDTO); 
 		//$this->setID($personID); 
 	}
-	function createPerson($con, $dto) 
+	public static function createPerson($con, $dto) 
 	{
 			$person_id = "";
-			$phone_id = "";
-			$address_id = "";
 			$f_name = $dto->getFname();
 			$l_name = $dto->getLname();
 			$email_addr = $dto->getEmail();
-			$phoneDTO = $dto->getPhoneDTO();
-			$addressDTO = $dto->getAddrDTO();
-			$phone_number = $phoneDTO->getPhoneNum();
-			$phone_type_id = $phoneDTO->getPhoneTypeID();
-			$street1 = $addressDTO->getStreet1();
-			$street2 = $addressDTO->getStreet2();
-			$city = $addressDTO->getCity();
-			$state_id = $addressDTO->getStateID();
-			$zip = $addressDTO->getZip();
 			
-			try {
-				$stmt = $con->prepare("INSERT INTO person (l_name, f_name, email_addr) VALUES (:l_name, :f_name, :email_addr)");
-				$con->beginTransaction();
-				
-				$stmt->bindParam(':l_name', $l_name);
-				$stmt->bindParam(':f_name', $f_name);
-				$stmt->bindParam(':email_addr', $email_addr);
-				
-				$stmt->execute();
-				$person_id = $con->lastInsertId();
-			}
-			catch(PDOException $e)
-			{
-				$person_id = "person insert Error: " . $e->getMessage();
-				$con->rollBack();
-				//$person_id = "insert into person failed, l_name: $l_name, f_name: $f_name, email_addr: $email_addr, person_id: $person_id; ";
-			}
-			try {		
-				$stmt = $con->prepare("INSERT INTO phone (phone_number, person_id, phone_type_id) VALUES (:phone_number, :person_id, :phone_type_id)");
-				
-				$stmt->bindParam(':phone_number', $phone_number);
-				$stmt->bindParam(':person_id', $person_id);
-				$stmt->bindParam(':phone_type_id', $phone_type_id);
-				
-				$stmt->execute();
-				$phone_id = $con->lastInsertId();
-			}
-			catch(PDOException $e)
-			{
-				$person_id = $person_id . " | Phone insert Error: " . $e->getMessage();
-				$con->rollBack();
-				//$person_id = $person_id . "insert into phone failed, phone_number: $phone_number, phone_type_id: $phone_type_id, phone_id: $phone_id; ";
-			}
-			try {		
-				$stmt = $con->prepare("INSERT INTO address (street1, street2, city, state_id, zip, person_id) VALUES (:street1, :street2, :city, :state_id, :zip, :person_id)");
-				
-				$stmt->bindParam(':street1', $street1);
-				$stmt->bindParam(':street2', $street2);
-				$stmt->bindParam(':city', $city);
-				$stmt->bindParam(':state_id', $state_id);
-				$stmt->bindParam(':person_id', $person_id);
-				$stmt->bindParam(':zip', $zip);
-				
-				$stmt->execute();
-				$address_id = $con->lastInsertId();
-				$con->commit();
-			}
-			catch(PDOException $e)
-			{
-				$person_id = $person_id . " | Address insert Error: " . $e->getMessage();
-				$con->rollBack();
-				//$person_id = $person_id . "insert into address failed, phone_number: $phone_number, phone_type_id: $phone_type_id, phone_id: $phone_id; ";
-			}
+			$stmt = $con->prepare("INSERT INTO person (l_name, f_name, email_addr) VALUES (:l_name, :f_name, :email_addr)");
+			$stmt->bindParam(':l_name', $l_name);
+			$stmt->bindParam(':f_name', $f_name);
+			$stmt->bindParam(':email_addr', $email_addr);
+			$stmt->execute();
+			$person_id = $con->lastInsertId();
+
 			return $person_id;
 	}
 	function readPersonList($con)

@@ -29,11 +29,9 @@ $address_id = "";
 $person_id = "";
 $phone_id = "";
 $phone_type = "";
-$tempPhoneDTO = PhoneDAO::getPhoneDTO($phone_id, $person_id, $phone_type_id, $phone_number,  $phone_type);
-$tempAddressDTO = AddressDAO::getAddressDTO($street1, $street2, $city, $state_id, $zip, $address_id, $person_id);
-$tempPersonDTO = PersonDAO::getPersonDTO($person_id, $l_name, $f_name, $email_addr, $tempPhoneDTO,  $tempAddressDTO);
+$phoneDTO = PhoneDAO::getPhoneDTO($phone_id, $person_id, $phone_type_id, $phone_number,  $phone_type);
+$addressDTO = AddressDAO::getAddressDTO($street1, $street2, $city, $state_id, $zip, $address_id, $person_id);
+$personDTO = PersonDAO::getPersonDTO($person_id, $l_name, $f_name, $email_addr, $phoneDTO,  $addressDTO);
 $progrManager = new programManager();
-$progrManager->openConn();
-$progrManager->createPerson($tempPersonDTO);
-$progrManager->closeConn();
+$progrManager->createPerson($personDTO);
 ?>

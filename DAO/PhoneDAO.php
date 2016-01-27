@@ -47,25 +47,21 @@ class PhoneDAO extends BaseDAO{
 	}
 	public static function createPhone($con, $dto) 
 	{
-			try {
-				$f_name = $dto->getFname();
-				$l_name = $dto->getLname();
-				$email_addr = $dto->getEmail();
-				$stmt = $con->prepare("INSERT INTO person (l_name, f_name, email_addr) VALUES (:l_name, :f_name, :email_addr)");
-				$stmt->bindParam(':l_name', $l_name);
-				$stmt->bindParam(':f_name', $f_name);
-				$stmt->bindParam(':email_addr', $email_addr);
-				$stmt->execute();
-				//echo '<br><br>Hello from AddressDAO with PDO prepared statement<br><br>';
-				$person_id = $con->lastInsertId();
-				//echo 'person_id: ' . $person_id . '<br><br>';
-				//var_dump($dto);
-			}
-			catch(PDOException $e)
-			{
-				//echo "Error: " . $e->getMessage();
-			}
-			return $person_id;
+			$person_id = $dto->getPersonID();
+			$phone_id = "";
+			$phone_number = $dto->getPhoneNum();
+			$phone_type_id = $dto->getPhoneTypeID();
+					
+			$stmt = $con->prepare("INSERT INTO phone (phone_number, person_id, phone_type_id) VALUES (:phone_number, :person_id, :phone_type_id)");
+			
+			$stmt->bindParam(':phone_number', $phone_number);
+			$stmt->bindParam(':person_id', $person_id);
+			$stmt->bindParam(':phone_type_id', $phone_type_id);
+			
+			$stmt->execute();
+			$phone_id = $con->lastInsertId();
+			
+			return $phone_id;
 	}
 	public static function readPhoneTypeList($con)
 	{

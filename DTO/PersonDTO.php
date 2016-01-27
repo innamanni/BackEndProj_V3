@@ -6,6 +6,7 @@ class PersonDTO extends BaseDTO
 	var $f_name;
 	var $l_name;
 	var $email_addr;
+	
 	function getID()
 	{
 		return $this->person_id;
