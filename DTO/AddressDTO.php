@@ -3,7 +3,7 @@ require_once 'DTO/BaseDTO.php';
 class AddressDTO extends BaseDTO
 {
 	var $address_id = "";
-	var $address_id = "";
+	var $person_id = "";
 	var $street1;
 	var $street2 = "";
 	var $city;

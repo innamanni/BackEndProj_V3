@@ -90,7 +90,7 @@ class ProgramManager
 		echo $json;
 	}
 	function getState(){
-		$stateList = readStateList($this->con);
+		$stateList = StateDAO::readStateList($this->con);
 		$json = json_encode($stateList);
 		echo $json;
 	}

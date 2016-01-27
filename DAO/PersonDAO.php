@@ -41,12 +41,19 @@ class PersonDAO extends BaseDAO{
 	{
 			$person_id = "";
 			$phone_id = "";
+			$address_id = "";
 			$f_name = $dto->getFname();
 			$l_name = $dto->getLname();
 			$email_addr = $dto->getEmail();
 			$phoneDTO = $dto->getPhoneDTO();
+			$addressDTO = $dto->getAddrDTO();
 			$phone_number = $phoneDTO->getPhoneNum();
 			$phone_type_id = $phoneDTO->getPhoneTypeID();
+			$street1 = $addressDTO->getStreet1();
+			$street2 = $addressDTO->getStreet2();
+			$city = $addressDTO->getCity();
+			$state_id = $addressDTO->getStateID();
+			$zip = $addressDTO->getZip();
 			
 			try {
 				$stmt = $con->prepare("INSERT INTO person (l_name, f_name, email_addr) VALUES (:l_name, :f_name, :email_addr)");
@@ -74,7 +81,6 @@ class PersonDAO extends BaseDAO{
 				
 				$stmt->execute();
 				$phone_id = $con->lastInsertId();
-				$con->commit();
 			}
 			catch(PDOException $e)
 			{
@@ -82,22 +88,37 @@ class PersonDAO extends BaseDAO{
 				$con->rollBack();
 				//$person_id = $person_id . "insert into phone failed, phone_number: $phone_number, phone_type_id: $phone_type_id, phone_id: $phone_id; ";
 			}
+			try {		
+				$stmt = $con->prepare("INSERT INTO address (street1, street2, city, state_id, zip, person_id) VALUES (:street1, :street2, :city, :state_id, :zip, :person_id)");
+				
+				$stmt->bindParam(':street1', $street1);
+				$stmt->bindParam(':street2', $street2);
+				$stmt->bindParam(':city', $city);
+				$stmt->bindParam(':state_id', $state_id);
+				$stmt->bindParam(':person_id', $person_id);
+				$stmt->bindParam(':zip', $zip);
+				
+				$stmt->execute();
+				$address_id = $con->lastInsertId();
+				$con->commit();
+			}
+			catch(PDOException $e)
+			{
+				$person_id = $person_id . " | Address insert Error: " . $e->getMessage();
+				$con->rollBack();
+				//$person_id = $person_id . "insert into address failed, phone_number: $phone_number, phone_type_id: $phone_type_id, phone_id: $phone_id; ";
+			}
 			return $person_id;
 	}
 	function readPersonList($con)
 	{
 		$personList = array();
-		$sql = "select * from person, phone, phone_type where person.person_id = phone.person_id and phone.phone_type_id = phone_type.phone_type_id;";
+		$sql = "select * from person, phone, phone_type, address where person.person_id = phone.person_id and phone.phone_type_id = phone_type.phone_type_id and person.person_id = address.person_id;";
 		foreach ($con->query($sql) as $row)
 		{	
-			$tempAddressDTO = AddressDAO::getAddrDTO($row['street1'], $row['street2'], $row['city'], $row['state_id'], $row['zip'], $row['address_id'], $row['person_id']);
-			$tempPhoneDTO = PersonDAO::getPhoneDTO($row['phone_id'], $row['person_id'], $row['phone_type_id'], $row['phone_number'], $row['phone_type']);
-			$tempPersonDTO = getPersonDTO($row['person_id'],
-						$row['l_name'],
-						$row['f_name'],
-						$row['email_addr'],
-						$tempPhoneDTO, 
-						$tempAddressDTO);
+			$tempAddressDTO = AddressDAO::getAddressDTO($row['street1'], $row['street2'], $row['city'], $row['state_id'], $row['zip'], $row['address_id'], $row['person_id']);
+			$tempPhoneDTO = PhoneDAO::getPhoneDTO($row['phone_id'], $row['person_id'], $row['phone_type_id'], $row['phone_number'], $row['phone_type']);
+			$tempPersonDTO = PersonDAO::getPersonDTO($row['person_id'], $row['l_name'], $row['f_name'], $row['email_addr'], $tempPhoneDTO,  $tempAddressDTO);
 						
 			$personList[count($personList)] = $tempPersonDTO;
 		}
@@ -107,18 +128,21 @@ class PersonDAO extends BaseDAO{
 	{
 		$numOfPersons = count($person_id);
 		$sql_phone = "delete from phone where person_id in (";
+		$sql_address = "delete from address where person_id in (";
 		$sql_person = "delete from person where person_id in (";
 		for ($i = 0; $i < $numOfPersons; $i++) {
 				$sql_phone .= ":id" . $i;
+				$sql_address .= ":id" . $i;
 				$sql_person .= ":id" . $i;
 				if ($numOfPersons - $i > 1) {$sql .= ',';}
 		}
 		$sql_phone .= ")";
+		$sql_address .= ")";
 		$sql_person .= ")";
+		$con->beginTransaction();
 		try 
 		{
 			$stmt = $con->prepare($sql_phone);
-			$con->beginTransaction();
 			
 			for ($i = 0; $i < $numOfPersons; $i++) {
 				$stmt->bindParam(':id' . $i, $person_id[$i]);
@@ -129,6 +153,21 @@ class PersonDAO extends BaseDAO{
 		catch(PDOException $e)
 		{
 			$sql_phone = "<br>" . $e->getMessage();
+			$con->rollBack();
+		}
+		try 
+		{
+			$stmt = $con->prepare($sql_address);
+			
+			for ($i = 0; $i < $numOfPersons; $i++) {
+				$stmt->bindParam(':id' . $i, $person_id[$i]);
+			}
+			$stmt->execute();
+			echo "Record deleted successfully";
+		}
+		catch(PDOException $e)
+		{
+			$sql_address = "<br>" . $e->getMessage();
 			$con->rollBack();
 		}
 		try 

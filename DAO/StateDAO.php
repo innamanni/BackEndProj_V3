@@ -4,7 +4,7 @@ class StateDAO extends BaseDAO {
 		$tempStateDTO = new StateDTO($state_id, $state_abbr, $state_descr);
 		return $tempStateDTO;
 	}
-	function readStateList($con)
+	public static function readStateList($con)
 	{
 		$stateList = array();
 		$sql = "select * from state";
