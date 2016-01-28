@@ -67,68 +67,24 @@ class PersonDAO extends BaseDAO{
 		}
 		return $personList;
 	}
-	function deletePerson($con, $person_id)
+	public static function deletePerson($con, $person_id)
 	{
 		$numOfPersons = count($person_id);
-		$sql_phone = "delete from phone where person_id in (";
-		$sql_address = "delete from address where person_id in (";
 		$sql_person = "delete from person where person_id in (";
 		for ($i = 0; $i < $numOfPersons; $i++) {
-				$sql_phone .= ":id" . $i;
-				$sql_address .= ":id" . $i;
 				$sql_person .= ":id" . $i;
 				if ($numOfPersons - $i > 1) {$sql .= ',';}
 		}
-		$sql_phone .= ")";
-		$sql_address .= ")";
 		$sql_person .= ")";
-		$con->beginTransaction();
-		try 
-		{
-			$stmt = $con->prepare($sql_phone);
-			
-			for ($i = 0; $i < $numOfPersons; $i++) {
-				$stmt->bindParam(':id' . $i, $person_id[$i]);
-			}
-			$stmt->execute();
-			echo "Record deleted successfully";
+		
+		$stmt = $con->prepare($sql_person);
+		
+		for ($i = 0; $i < $numOfPersons; $i++) {
+			$stmt->bindParam(':id' . $i, $person_id[$i]);
 		}
-		catch(PDOException $e)
-		{
-			$sql_phone = "<br>" . $e->getMessage();
-			$con->rollBack();
-		}
-		try 
-		{
-			$stmt = $con->prepare($sql_address);
-			
-			for ($i = 0; $i < $numOfPersons; $i++) {
-				$stmt->bindParam(':id' . $i, $person_id[$i]);
-			}
-			$stmt->execute();
-			echo "Record deleted successfully";
-		}
-		catch(PDOException $e)
-		{
-			$sql_address = "<br>" . $e->getMessage();
-			$con->rollBack();
-		}
-		try 
-		{
-			$stmt = $con->prepare($sql_person);
-			
-			for ($i = 0; $i < $numOfPersons; $i++) {
-				$stmt->bindParam(':id' . $i, $person_id[$i]);
-			}
-			$stmt->execute();
-			$con->commit();
-			echo "Record deleted successfully";
-		}
-		catch(PDOException $e)
-		{
-			$sql_person = "<br>" . $e->getMessage();
-			$con->rollBack();
-		}
+		$stmt->execute();
+		$con->commit();
+		echo "Record deleted successfully";
 		return $sql_person;
 	}
 	function getPerson($con, $person_id)

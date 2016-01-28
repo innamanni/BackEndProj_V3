@@ -80,30 +80,23 @@ class AddressDAO extends BaseDAO{
 
 		return $person_id;
 	}
-	function deleteAddress($con, $address_id)
+	public static function deleteAddress($con, $person_id)
 	{
-		$numOfAddr = count($address_id);
-		$sql = "delete from address where address_id in (";
-		for ($i = 0; $i < $numOfAddr; $i++) {
-				$sql .= ":id" . $i;
-				if ($numOfAddr - $i > 1) {$sql .= ',';}
-			}
-		{$sql .= ")";}
-		try 
-		{
-			// delete from address where address_id in (0, 1, 2, 3);
-			$stmt = $con->prepare($sql);
-			for ($i = 0; $i < $numOfAddr; $i++) {
-				$stmt->bindParam(':id' . $i, $address_id[$i]);
-			}
-			$stmt->execute();
-			echo "Record deleted successfully";
+		$numOfPersons = count($person_id);
+		$sql_address = "delete from address where person_id in (";
+		for ($i = 0; $i < $numOfPersons; $i++) {
+				$sql_address .= ":id" . $i;
+				if ($numOfPersons - $i > 1) {$sql .= ',';}
 		}
-		catch(PDOException $e)
-		{
-			$sql = "<br>" . $e->getMessage();
+		$sql_address .= ")";
+		$stmt = $con->prepare($sql_address);
+		
+		for ($i = 0; $i < $numOfPersons; $i++) {
+			$stmt->bindParam(':id' . $i, $person_id[$i]);
 		}
-		return $sql;
+		$stmt->execute();
+		echo "Record deleted successfully";
+		return $sql_address;
 	}
 	function getAddress($con, $address_id)
 	{

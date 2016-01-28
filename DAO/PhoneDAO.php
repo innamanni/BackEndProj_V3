@@ -79,5 +79,23 @@ class PhoneDAO extends BaseDAO{
 		}
 		return $phoneTypeList;
 	}
+	public static function deletePhone($con, $person_id)
+	{
+		$numOfPersons = count($person_id);
+		$sql_phone = "delete from phone where person_id in (";
+		for ($i = 0; $i < $numOfPersons; $i++) {
+				$sql_phone .= ":id" . $i;
+				if ($numOfPersons - $i > 1) {$sql .= ',';}
+		}
+		$sql_phone .= ")";
+		$stmt = $con->prepare($sql_phone);
+		
+		for ($i = 0; $i < $numOfPersons; $i++) {
+			$stmt->bindParam(':id' . $i, $person_id[$i]);
+		}
+		$stmt->execute();
+		echo "Record deleted successfully";
+		return $sql_phone;
+	}
 }
 ?>

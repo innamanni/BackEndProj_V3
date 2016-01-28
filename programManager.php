@@ -43,12 +43,23 @@ class ProgramManager
 	}
 	function deletePerson($person_id) {
 		self::openConn();
-		$this->personDAO = new PersonDAO();
-		$result = $this->personDAO->deletePerson($this->con, $person_id);
-		$return = new ResultDTO($result, "DELETED");
-		$json = json_encode($return);
-		echo $json;
-		self::closeConn();
+		$con->beginTransaction();
+		try 
+		{
+			PhoneDAO::deletePhone($this->con, $person_id);
+			AddressDAO::deleteAddress($this->con, $person_id);
+			$result = PersonDAO::deletePerson($this->con, $person_id);
+			$return = new ResultDTO($result, "DELETED");
+			$json = json_encode($return);
+			echo $json;
+			$this->con->commit();
+			self::closeConn();
+		}
+		catch(PDOException $e)
+		{
+			$sql_phone = "<br>" . $e->getMessage();
+			$con->rollBack();
+		}
 	}
 	function updatePerson($personID){
 		self::openConn();
