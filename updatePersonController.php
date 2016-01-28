@@ -15,7 +15,5 @@ include 'DTO/ResultDTO.php';
 $data_back = json_decode(file_get_contents('php://input'));
 $person_id = $data_back->{"person_id"};
 $progrManager = new programManager();
-$progrManager->openConn();
 $progrManager->updatePerson($person_id);
-$progrManager->closeConn();
 ?>

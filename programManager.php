@@ -33,38 +33,48 @@ class ProgramManager
 		}
 	}
 	function readPerson(){
+	    self::openConn();
 		$this->personDAO = new PersonDAO();
 		$result = $this->personDAO->readPersonList($this->con);
 		$return = new ResultDTO($result, "READ");
 		$json = json_encode($return);
 		echo $json;
+		self::closeConn();
 	}
 	function deletePerson($person_id) {
+		self::openConn();
 		$this->personDAO = new PersonDAO();
 		$result = $this->personDAO->deletePerson($this->con, $person_id);
 		$return = new ResultDTO($result, "DELETED");
 		$json = json_encode($return);
 		echo $json;
+		self::closeConn();
 	}
 	function updatePerson($personID){
+		self::openConn();
 		$this->personDAO = new PersonDAO();
 		$result = $this->personDAO->getPerson($this->con, $personID);
 		$return = new ResultDTO($result, "DISPLAYED");
 		$json = json_encode($return);
 		echo $json;
+		self::closeConn();
 	}
 	function updatePersonRecord($personDTO){
+		self::openConn();
 		$this->personDAO = new PersonDAO();
 		$result = $this->personDAO->updatePerson($this->con, $personDTO);
 		$return = new ResultDTO($result, "CREATED");
 		$json = json_encode($return);
 		echo $json;
+		self::closeConn();
 	}
 	function getPhoneTypes(){
+		self::openConn();
 		$this->phoneDAO = new PhoneDAO();
 		$phoneTypeList = $this->phoneDAO->readPhoneTypeList($this->con);
 		$json = json_encode($phoneTypeList);
 		echo $json;
+		self::closeConn();
 	}
 	
 	function createAddr($tempAddressDTO) {

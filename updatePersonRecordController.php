@@ -33,7 +33,5 @@ $tempPhoneDTO = PhoneDAO::getPhoneDTO($phone_id, $person_id, $phone_type_id, $ph
 $tempAddressDTO = AddressDAO::getAddressDTO($street1, $street2, $city, $state_id, $zip, $address_id, $person_id);
 $tempPersonDTO = PersonDAO::getPersonDTO($person_id, $l_name, $f_name, $email_addr, $tempPhoneDTO,  $tempAddressDTO);
 $progrManager = new programManager();
-$progrManager->openConn();
 $progrManager->updatePersonRecord($tempPersonDTO);
-$progrManager->closeConn();
 ?>
