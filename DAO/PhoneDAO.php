@@ -97,5 +97,18 @@ class PhoneDAO extends BaseDAO{
 		echo "Record deleted successfully";
 		return $sql_phone;
 	}
+	public static function updatePhone($con, $phoneDTO)
+	{
+		$person_id = $phoneDTO->getPersonID();
+		$phone_number = $phoneDTO->getPhoneNum();
+		$phone_type_id = $phoneDTO->getPhoneTypeID();
+		$phone_id = $phoneDTO->getPhoneID();
+
+		$stmt = $con->prepare("UPDATE phone SET phone_number=:phone_number, phone_id=:phone_id, phone_type_id=:phone_type_id WHERE person_id=$person_id");
+		$stmt->bindParam(':phone_number', $phone_number);
+		$stmt->bindParam(':phone_id', $phone_id);
+		$stmt->bindParam(':phone_type_id', $phone_type_id);
+		$stmt->execute();
+	}
 }
 ?>

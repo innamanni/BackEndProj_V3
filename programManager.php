@@ -21,7 +21,7 @@ class ProgramManager
 			$addressDTO->setPersonID($person_id);
 			$phone_id = PhoneDAO::createPhone($this->con, $phoneDTO);
 			$address_id = AddressDAO::createAddress($this->con, $addressDTO);
-			$return = new ResultDTO($address_id, "CREATED");
+			$return = new ResultDTO($person_id, "CREATED");
 			$json = json_encode($return);
 			echo $json;
 			$this->con->commit();
@@ -34,8 +34,9 @@ class ProgramManager
 	}
 	function readPerson(){
 	    self::openConn();
-		$this->personDAO = new PersonDAO();
-		$result = $this->personDAO->readPersonList($this->con);
+		//$addrDTO;
+		//$phoneDTO;
+		$result = PersonDAO::readPersonList($this->con);
 		$return = new ResultDTO($result, "READ");
 		$json = json_encode($return);
 		echo $json;
@@ -43,7 +44,7 @@ class ProgramManager
 	}
 	function deletePerson($person_id) {
 		self::openConn();
-		$con->beginTransaction();
+		$this->con->beginTransaction();
 		try 
 		{
 			PhoneDAO::deletePhone($this->con, $person_id);
@@ -58,13 +59,12 @@ class ProgramManager
 		catch(PDOException $e)
 		{
 			$sql_phone = "<br>" . $e->getMessage();
-			$con->rollBack();
+			$this->con->rollBack();
 		}
 	}
 	function updatePerson($personID){
 		self::openConn();
-		$this->personDAO = new PersonDAO();
-		$result = $this->personDAO->getPerson($this->con, $personID);
+		$result = PersonDAO::getPerson($this->con, $personID);
 		$return = new ResultDTO($result, "DISPLAYED");
 		$json = json_encode($return);
 		echo $json;
@@ -72,12 +72,22 @@ class ProgramManager
 	}
 	function updatePersonRecord($personDTO){
 		self::openConn();
-		$this->personDAO = new PersonDAO();
-		$result = $this->personDAO->updatePerson($this->con, $personDTO);
-		$return = new ResultDTO($result, "CREATED");
-		$json = json_encode($return);
-		echo $json;
-		self::closeConn();
+		$this->con->beginTransaction();
+		try {
+			AddressDAO::updateAddress($this->con, $personDTO->getAddrDTO());
+			PhoneDAO::updatePhone($this->con, $personDTO->getPhoneDTO());
+			$person_id = PersonDAO::updatePerson($this->con, $personDTO);
+			$return = new ResultDTO($person_id, "UPDATED");
+			$json = json_encode($return);
+			echo $json;
+			$this->con->commit();
+			self::closeConn();
+		}
+		catch(PDOException $e)
+		{
+			$person_id = "person insert Error: " . $e->getMessage();
+			$this->con->rollBack();
+		}
 	}
 	function getPhoneTypes(){
 		self::openConn();

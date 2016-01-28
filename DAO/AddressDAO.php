@@ -78,7 +78,7 @@ class AddressDAO extends BaseDAO{
 		$stmt->execute();
 		//$address_id = $con->lastInsertId();
 
-		return $person_id;
+		return $address_id;
 	}
 	public static function deleteAddress($con, $person_id)
 	{
@@ -123,6 +123,24 @@ class AddressDAO extends BaseDAO{
 		}
 		return $tempAddressDTO;
 	}
+	public static function updateAddress($con, $addressDTO)
+	{
+		$person_id = $addressDTO->getPersonID();
+		$street1 = $addressDTO->getStreet1();
+		$street2 = $addressDTO->getStreet2();
+		$city = $addressDTO->getCity();
+		$state_id = $addressDTO->getStateID();
+		$zip = $addressDTO->getZip();
+		$stmt = $con->prepare("UPDATE address SET street1=:street1, street2=:street2, city=:city, state_id=:state_id, zip=:zip WHERE person_id=:person_id");
+		$stmt->bindParam(':street1', $street1);
+		$stmt->bindParam(':street2', $street2);
+		$stmt->bindParam(':city', $city);
+		$stmt->bindParam(':state_id', $state_id);
+		$stmt->bindParam(':zip', $zip);
+		$stmt->bindParam(':person_id', $person_id);
+		$stmt->execute();
+	}
+	/*
 	function updateAddress($con, $dto)
 	{
 		//$sql = "UPDATE address SET 'column1'=value, column2=value2,... WHERE some_column=some_value";
@@ -148,5 +166,6 @@ class AddressDAO extends BaseDAO{
 			}
 			return $address_id;
 	}
+	*/
 }
 ?>

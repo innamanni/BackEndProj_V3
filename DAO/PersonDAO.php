@@ -53,7 +53,7 @@ class PersonDAO extends BaseDAO{
 
 			return $person_id;
 	}
-	function readPersonList($con)
+	public static function readPersonList($con)
 	{
 		$personList = array();
 		$sql = "select * from person, phone, phone_type, address where person.person_id = phone.person_id and phone.phone_type_id = phone_type.phone_type_id and person.person_id = address.person_id;";
@@ -87,7 +87,7 @@ class PersonDAO extends BaseDAO{
 		echo "Record deleted successfully";
 		return $sql_person;
 	}
-	function getPerson($con, $person_id)
+	public static function getPerson($con, $person_id)
 	{
 		$sql = "select * from person, phone, phone_type, address where person.person_id = phone.person_id AND person.person_id = address.person_id AND phone.phone_type_id = phone_type.phone_type_id AND person.person_id = $person_id;";
 		foreach ($con->query($sql) as $row)
@@ -98,35 +98,17 @@ class PersonDAO extends BaseDAO{
 		}
 		return $tempPersonDTO;
 	}
-	function updatePerson($con, $personDTO)
+	public static function updatePerson($con, $personDTO)
 	{
 		$person_id = $personDTO->getID();
 		$f_name = $personDTO->getFname();
 		$l_name = $personDTO->getLname();
 		$email_addr = $personDTO->getEmail();
-		$phoneDTO = $personDTO->getPhoneDTO();
-		$phone_number = $phoneDTO->getPhoneNum();
-		$phone_type_id = $phoneDTO->getPhoneTypeID();
-		$phone_id = $phoneDTO->getPhoneID();
-		$con->beginTransaction();
-		try {
-			$stmt = $con->prepare("UPDATE person SET f_name=:f_name, l_name=:l_name, email_addr=:email_addr WHERE person_id=$person_id");
-			$stmt->bindParam(':f_name', $f_name);
-			$stmt->bindParam(':l_name', $l_name);
-			$stmt->bindParam(':email_addr', $email_addr);
-			$stmt->execute();
-			$stmt = $con->prepare("UPDATE phone SET phone_number=:phone_number, phone_id=:phone_id, phone_type_id=:phone_type_id WHERE person_id=$person_id");
-			$stmt->bindParam(':phone_number', $phone_number);
-			$stmt->bindParam(':phone_id', $phone_id);
-			$stmt->bindParam(':phone_type_id', $phone_type_id);
-			$stmt->execute();
-			$con->commit();
-		}
-		catch(PDOException $e)
-		{
-			$person_id = "person insert Error: " . $e->getMessage();
-			$con->rollBack();
-		}
+		$stmt = $con->prepare("UPDATE person SET f_name=:f_name, l_name=:l_name, email_addr=:email_addr WHERE person_id=$person_id");
+		$stmt->bindParam(':f_name', $f_name);
+		$stmt->bindParam(':l_name', $l_name);
+		$stmt->bindParam(':email_addr', $email_addr);
+		$stmt->execute();
 		return $person_id;
 	}
 }
