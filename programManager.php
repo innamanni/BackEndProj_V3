@@ -84,16 +84,22 @@ class ProgramManager
 			$person_id = "person insert Error: " . $e->getMessage();
 			$this->con->rollBack();
 		}
-	}/*
+	}
+	function getStateList(){
+		self::openConn();
+		$stateList = StateDAO::readStateList($this->con);
+		//$statesDTO = new StatesDTO($stateList, "states list");
+		self::closeConn();
+		return $stateList;
+	}
 	function getPhoneTypes(){
 		self::openConn();
 		$this->phoneDAO = new PhoneDAO();
 		$phoneTypeList = $this->phoneDAO->readPhoneTypeList($this->con);
-		$json = json_encode($phoneTypeList);
-		echo $json;
 		self::closeConn();
+		return $phoneTypeList;
 	}
-	
+	/*
 	function createAddr($tempAddressDTO) {
 		$this->addr_dto = $tempAddressDTO;
 		$this->addrDAO = new AddressDAO();
@@ -131,11 +137,7 @@ class ProgramManager
 		$json = json_encode($return);
 		echo $json;
 	}
-	function getState(){
-		$stateList = StateDAO::readStateList($this->con);
-		$json = json_encode($stateList);
-		echo $json;
-	}
+
 	*/
 	function closeConn() {
 		$this->db->db_close($this->con);

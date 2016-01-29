@@ -9,9 +9,10 @@ include "DAO/AddressDAO.php";
 include "DTO/AddressDTO.php";
 include "DAO/StateDAO.php";
 include "DTO/StateDTO.php";
+include "DTO/StatesDTO.php";
 include 'DTO/ResultDTO.php';
 $progrManager = new programManager();
-$progrManager->openConn();
-$progrManager->getState();
-$progrManager->closeConn();
+$states = $progrManager->getStateList();
+$json = json_encode($states);
+echo $json;
 ?>
