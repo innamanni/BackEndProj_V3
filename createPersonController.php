@@ -13,28 +13,6 @@ require_once "DAO/StateDAO.php";
 require_once "DTO/StateDTO.php";
 require_once 'DTO/ResultDTO.php';
 require_once 'DTO/PersonsDTO.php';
-/*
-$data_back = json_decode(file_get_contents('php://input'));
-$phone = $data_back->{"phone"};
-$address = $data_back->{"address"};
-$phone_number = $phone->{"phone_number"};
-$phone_type_id = $phone->{"phone_type_id"};
-$f_name = $data_back->{"fname"};
-$l_name = $data_back->{"lname"};
-$email_addr = $data_back->{"email"};
-$street1 = $address->{"street1"};
-$street2 = $address->{"street2"};
-$city = $address->{"city"};
-$state_id = $address->{"state_id"};
-$zip = $address->{"zip"};
-*/
-//$address_id = "";
-//$person_id = "";
-//$phone_id = "";
-//$phone_type = "";
-//$phoneDTO = PhoneDAO::getPhoneDTO($phone_id, $person_id, $phone_type_id, $phone_number,  $phone_type);
-//$addressDTO = AddressDAO::getAddressDTO($street1, $street2, $city, $state_id, $zip, $address_id, $person_id);
-//$personDTO = PersonDAO::getPersonDTO($person_id, $l_name, $f_name, $email_addr, $phoneDTO,  $addressDTO);
 $person_json = json_decode(file_get_contents('php://input'));
 $phone_json = $person_json->{"phone"};
 $address_json = $person_json->{"address"};

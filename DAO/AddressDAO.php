@@ -37,6 +37,17 @@ class AddressDAO extends BaseDAO{
 		//$this->setDTO($addrDTO); 
 		//$this->setID($addrID); 
 	}
+	public static function loadAddress($con, $person_id)
+	{
+		$sql = "select * from address where person_id = $person_id;";
+		$stmt = $con->query($sql);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		$tempAddrDTO = AddressDAO::getAddressDTO($row['street1'], $row['street2'], $row['city'], $row['state_id'], $row['zip'], $row['address_id'], $row['person_id']);
+
+		return $tempAddrDTO;
+	}
 	function readAddressList($con)
 	{
 		$addressList = array();

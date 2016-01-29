@@ -45,6 +45,18 @@ class PhoneDAO extends BaseDAO{
 						$tempPhoneType);
 		return $tempPhoneDTO;
 	}
+	public static function loadPhone($con, $person_id)
+	{
+		$sql = "select * from phone where person_id = $person_id;";
+		$stmt = $con->query($sql);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		//$tempPhoneID, $tempPersonID, $tempPhoneTypeID, $tempPhoneNum, $tempPhoneType
+		$tempPhoneDTO = PhoneDAO::getPhoneDTO($row['phone_id'], $row['person_id'], $row['phone_type_id'], $row['phone_number'], "");
+
+		return $tempPhoneDTO;
+	}
 	public static function createPhone($con, $dto) 
 	{
 			$person_id = $dto->getPersonID();

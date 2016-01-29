@@ -14,7 +14,6 @@ class ProgramManager
 			self::openConn();
 			$this->con->beginTransaction();
 			$person_id = PersonDAO::createPerson($this->con, $tempPersonDTO);
-			//CHECK HERE IF DTOs ARE EMPTY???
 			$phoneDTO = $tempPersonDTO->getPhoneDTO();
 			$phoneDTO->setPersonID($person_id);
 			$addressDTO = $tempPersonDTO->getAddrDTO();
@@ -30,6 +29,16 @@ class ProgramManager
 		{
 			$this->con->rollBack();
 		}
+	}
+	function loadPersonDetails($personID){
+		self::openConn();
+		$personDTO = PersonDAO::getPersonDTO($personID, "", "", "");
+		$phoneDTO = PhoneDAO::loadPhone($this->con, $personID);
+		$addressDTO = AddressDAO::loadAddress($this->con, $personID);
+		$personDTO->setPhoneDTO($phoneDTO);
+		$personDTO->setAddrDTO($addressDTO);
+		self::closeConn();
+		return $personDTO;
 	}
 	function loadAllPersons(){
 	    self::openConn();
@@ -60,7 +69,7 @@ class ProgramManager
 	}
 	function updatePerson($personID){
 		self::openConn();
-		$result = PersonDAO::getPerson($this->con, $personID);
+		$result = PersonDAO::loadPerson($this->con, $personID);
 		$return = new ResultDTO($result, "DISPLAYED");
 		$json = json_encode($return);
 		echo $json;

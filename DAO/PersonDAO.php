@@ -100,7 +100,7 @@ class PersonDAO extends BaseDAO{
 		echo "Record deleted successfully";
 		return $sql_person;
 	}
-	public static function getPerson($con, $person_id)
+	public static function loadPerson($con, $person_id)
 	{
 		$sql = "select * from person where person.person_id = $person_id;";
 		$stmt = $con->query($sql);
