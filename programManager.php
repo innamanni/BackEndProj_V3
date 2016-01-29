@@ -33,10 +33,10 @@ class ProgramManager
 	}
 	function loadAllPersons(){
 	    self::openConn();
-		$personsList = PersonDAO::loadPersonsList($this->con);
-		$personsListDTO = new PersonsDTO($personsList, "READ");
+		$personList = PersonDAO::loadPersonsList($this->con);
+		$personListDTO = new PersonsDTO($personList, "READ");
 		self::closeConn();
-		return $personsListDTO;
+		return $personListDTO;
 	}
 	function deletePerson($person_id) {
 		self::openConn();
