@@ -1,17 +1,18 @@
 
 <?php
 //header('Content-type:application/json; charset=utf-8');
-include "programManager.php";
-include "db_util.php";
-include "DTO/PersonDTO.php";
-include "DAO/PersonDAO.php";
-include "DTO/PhoneDTO.php";
-include "DAO/PhoneDAO.php";
-include "DAO/AddressDAO.php";
-include "DTO/AddressDTO.php";
-include "DAO/StateDAO.php";
-include "DTO/StateDTO.php";
-include 'DTO/ResultDTO.php';
+require_once "programManager.php";
+require_once "db_util.php";
+require_once "DTO/PersonDTO.php";
+require_once "DAO/PersonDAO.php";
+require_once "DTO/PhoneDTO.php";
+require_once "DAO/PhoneDAO.php";
+require_once "DAO/AddressDAO.php";
+require_once "DTO/AddressDTO.php";
+require_once "DAO/StateDAO.php";
+require_once "DTO/StateDTO.php";
+require_once 'DTO/ResultDTO.php';
+require_once 'DTO/PersonsDTO.php';
 $data_back = json_decode(file_get_contents('php://input'));
 $phone = $data_back->{"phoneDTO"};
 $address = $data_back->{"addrDTO"};

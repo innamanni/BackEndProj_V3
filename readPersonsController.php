@@ -1,6 +1,5 @@
-
 <?php
-//header('Content-type:application/json; charset=utf-8');
+//header('Content-type: application/json');
 require_once "programManager.php";
 require_once "db_util.php";
 require_once "DTO/PersonDTO.php";
@@ -13,8 +12,8 @@ require_once "DAO/StateDAO.php";
 require_once "DTO/StateDTO.php";
 require_once 'DTO/ResultDTO.php';
 require_once 'DTO/PersonsDTO.php';
-$person_id_list = $_GET['deleteId'];
-$person_id = explode(',', $person_id_list);
 $progrManager = new programManager();
-$progrManager->deletePerson($person_id);
+$personsListDTO = $progrManager->loadAllPersons();
+$json = json_encode($personsListDTO);
+echo $json;
 ?>

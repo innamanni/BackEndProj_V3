@@ -31,12 +31,12 @@ class ProgramManager
 			$this->con->rollBack();
 		}
 	}
-	function readPerson(){
+	function loadAllPersons(){
 	    self::openConn();
-		$personList = PersonDAO::readPersonList($this->con);
-		$personListDTO = new PersonsDTO($personList, "READ");
+		$personsList = PersonDAO::loadPersonsList($this->con);
+		$personsListDTO = new PersonsDTO($personsList, "READ");
 		self::closeConn();
-		return $personListDTO;
+		return $personsListDTO;
 	}
 	function deletePerson($person_id) {
 		self::openConn();

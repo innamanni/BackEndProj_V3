@@ -53,7 +53,7 @@ class PersonDAO extends BaseDAO{
 
 			return $person_id;
 	}
-	public static function readPersonList($con)
+	public static function loadPersonsList($con)
 	{
 		$personList = array();
 		$sql = "select * from person;";
