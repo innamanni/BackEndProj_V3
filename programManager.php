@@ -7,7 +7,6 @@ class ProgramManager
 	const DBNAME = "mannitechcorp";
 	function openConn(){
 		$this->db = new Database(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
-<<<<<<< HEAD
 		$this->db_con = $this->db->db_connect();
 	}
 	function createPerson($tempPersonDTO) {
@@ -180,16 +179,5 @@ class ProgramManager
 	function closeConn() {
 		$this->db->db_close($this->db_con);
 	}
-
-=======
-	function getState(){
-		$stateList = readStateList($this->con);
-		$json = json_encode($stateList);
-		echo $json;
-	}
-	function closeConn() {
-		$this->db->db_close($this->con);
-	}
->>>>>>> origin/master
 }
 ?>
