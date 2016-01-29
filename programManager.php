@@ -7,6 +7,7 @@ class ProgramManager
 	const DBNAME = "mannitechcorp";
 	function openConn(){
 		$this->db = new Database(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
+<<<<<<< HEAD
 		$this->db_con = $this->db->db_connect();
 	}
 	function createPerson($tempPersonDTO) {
@@ -98,6 +99,26 @@ class ProgramManager
 		$this->addr_dto = $tempAddressDTO;
 		$this->addrDAO = new AddressDAO();
 		$result = $this->addrDAO->createAddress($this->db_con, $tempAddressDTO);
+=======
+		$this->con = $this->db->db_connect();
+	}
+	function createPerson($tempPersonDTO) {
+		$this->person_dto = $tempPersonDTO;
+		$this->personDAO = new PersonDAO();
+		$result = $this->personDAO->createPerson($this->con, $tempPersonDTO);
+		$return = new ResultDTO($result, "CREATED");
+		$json = json_encode($return);
+		echo $json;
+	}
+	
+	
+	
+	
+	function createAddr($tempAddressDTO) {
+		$this->addr_dto = $tempAddressDTO;
+		$this->addrDAO = new AddressDAO();
+		$result = $this->addrDAO->createAddress($this->con, $tempAddressDTO);
+>>>>>>> origin/master
 		$return = new ResultDTO($result, "CREATED");
 		$json = json_encode($return);
 		echo $json;
@@ -105,32 +126,49 @@ class ProgramManager
 	
 	function deleteAddr($address_id) {
 		$this->addrDAO = new AddressDAO();
+<<<<<<< HEAD
 		$result = $this->addrDAO->deleteAddress($this->db_con, $address_id);
+=======
+		$result = $this->addrDAO->deleteAddress($this->con, $address_id);
+>>>>>>> origin/master
 		$return = new ResultDTO($result, "CREATED");
 		$json = json_encode($return);
 		echo $json;
 	}
 	function readAddr(){
 		$this->addrDAO = new AddressDAO();
+<<<<<<< HEAD
 		$result = $this->addrDAO->readAddressList($this->db_con);
+=======
+		$result = $this->addrDAO->readAddressList($this->con);
+>>>>>>> origin/master
 		$return = new ResultDTO($result, "CREATED");
 		$json = json_encode($return);
 		echo $json;
 	}
 	function updateAddr($addrID){
 		$this->addrDAO = new AddressDAO();
+<<<<<<< HEAD
 		$result = $this->addrDAO->getAddress($this->db_con, $addrID);
+=======
+		$result = $this->addrDAO->getAddress($this->con, $addrID);
+>>>>>>> origin/master
 		$return = new ResultDTO($result, "CREATED");
 		$json = json_encode($return);
 		echo $json;
 	}
 	function updateAddrRecord($addrDTO){
 		$this->addrDAO = new AddressDAO();
+<<<<<<< HEAD
 		$result = $this->addrDAO->updateAddress($this->db_con, $addrDTO);
+=======
+		$result = $this->addrDAO->updateAddress($this->con, $addrDTO);
+>>>>>>> origin/master
 		$return = new ResultDTO($result, "CREATED");
 		$json = json_encode($return);
 		echo $json;
 	}
+<<<<<<< HEAD
 	*/
 	function getState(){
 	    self::openConn();
@@ -143,5 +181,15 @@ class ProgramManager
 		$this->db->db_close($this->db_con);
 	}
 
+=======
+	function getState(){
+		$stateList = readStateList($this->con);
+		$json = json_encode($stateList);
+		echo $json;
+	}
+	function closeConn() {
+		$this->db->db_close($this->con);
+	}
+>>>>>>> origin/master
 }
 ?>

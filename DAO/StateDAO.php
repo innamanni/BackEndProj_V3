@@ -1,10 +1,14 @@
 <?php
+<<<<<<< HEAD
 class StateDAO extends BaseDAO {
 	public static function getStateDTO($state_id, $state_abbr, $state_descr){
 		$tempStateDTO = new StateDTO($state_id, $state_abbr, $state_descr);
 		return $tempStateDTO;
 	}
 	public static function readStateList($con)
+=======
+	function readStateList($con)
+>>>>>>> origin/master
 	{
 		$stateList = array();
 		$sql = "select * from state";
@@ -24,5 +28,8 @@ class StateDAO extends BaseDAO {
 		$state_id = $con->query($sql);
 		return $state_id;
 	}
+<<<<<<< HEAD
 }
+=======
+>>>>>>> origin/master
 ?>

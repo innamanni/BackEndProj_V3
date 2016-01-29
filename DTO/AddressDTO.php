@@ -2,6 +2,7 @@
 require_once 'DTO/BaseDTO.php';
 class AddressDTO extends BaseDTO
 {
+<<<<<<< HEAD
 	//var $address_id = "";
 	//var $person_id = "";
 	var $street1;
@@ -40,13 +41,29 @@ class AddressDTO extends BaseDTO
 	}
 	
 	function getAddrID()
+=======
+	var $address_id;
+	var $street1;
+	var $street2 = "";
+	var $city;
+	var $state;
+	var $zip;
+	
+	function getID()
+>>>>>>> origin/master
 	{
 		return $this->address_id;
 	}
 	
+<<<<<<< HEAD
 	function setAddrID($tempAddrID)
 	{
 		$this->address_id=$tempAddrID;
+=======
+	function setID($tempID)
+	{
+		$this->address_id=$tempID;
+>>>>>>> origin/master
 	}
 	
 	function getStreet1()
@@ -80,6 +97,7 @@ class AddressDTO extends BaseDTO
 		$this->city=$tempCity;
 	}
 	
+<<<<<<< HEAD
 	function getStateID()
 	{
 		return $this->state_id;
@@ -88,6 +106,16 @@ class AddressDTO extends BaseDTO
 	function setStateID($tempStateID)
 	{
 		$this->state_id=$tempStateID;
+=======
+	function getState()
+	{
+		return $this->state;
+	}
+	
+	function setState($tempState)
+	{
+		$this->state=$tempState;
+>>>>>>> origin/master
 	}
 	
 	function getZip()
@@ -100,6 +128,7 @@ class AddressDTO extends BaseDTO
 		$this->zip=$tempZip;
 	}
 	
+<<<<<<< HEAD
 	function __construct($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID)
 	{
 	    $this->setPersonID($tempPersonID);
@@ -108,6 +137,24 @@ class AddressDTO extends BaseDTO
 		$this->setStreet2($tempStreet2); 
 		$this->setCity($tempCity); 
 		$this->setStateID($tempStateID);
+=======
+	function __construct($tempStreet1, $tempStreet2, $tempCity, $tempState, $tempZip, $temp_ID)
+	{
+	    /*
+	    echo "<br><br>hello from contructor! the variables are: " . 
+				"<br>$tempStreet1: " . $tempStreet1 . 
+				"<br>$tempStreet2: " . $tempStreet2 . 
+				"<br>$tempCity: " . $tempCity . 
+				"<br>$tempState: " . $tempState . 
+				"<br>$tempZip: " . $tempZip . "<br><br>";
+		*/
+				
+		$this->setID($temp_ID);
+		$this->setStreet1($tempStreet1); 
+		$this->setStreet2($tempStreet2); 
+		$this->setCity($tempCity); 
+		$this->setState($tempState);
+>>>>>>> origin/master
 		$this->setZip($tempZip);
 	}
 }

@@ -6,6 +6,7 @@ class PersonDTO extends BaseDTO
 	var $f_name;
 	var $l_name;
 	var $email_addr;
+<<<<<<< HEAD
 	public static function hidrateSelf($json_str){
 		if(!empty($json_str->{"fname"})){$fname = $json_str->{"fname"};}
 		else{$fname = "";}
@@ -18,39 +19,71 @@ class PersonDTO extends BaseDTO
 		$personDTO = new PersonDTO($person_id, $lname, $fname, $email);
 		return $personDTO;
 	}
+=======
+	
+>>>>>>> origin/master
 	function getID()
 	{
 		return $this->person_id;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	function setID($tempID)
 	{
 		$this->person_id=$tempID;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	function getLname()
 	{
 		return $this->l_name;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	function setLname($tempLname)
 	{
 		$this->l_name=$tempLname;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	function getFname()
 	{
 		return $this->f_name;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	function setFname($tempFname)
 	{
 		if ($tempFname != Null)
 		$this->f_name=$tempFname;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	function getEmail()
 	{
 		return $this->email_addr;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	function setEmail($tempEmail)
 	{
 		$this->email_addr=$tempEmail;
 	}
+<<<<<<< HEAD
 	function getPhoneDTO()
 	{
 		return $this->phoneDTO;
@@ -67,6 +100,9 @@ class PersonDTO extends BaseDTO
 	{
 		$this->addrDTO=$tempAddrDTO;
 	}
+=======
+	
+>>>>>>> origin/master
 	function __construct($tempID, $tempLname, $tempFname, $tempEmail)
 	{
 		$this->setID($tempID);

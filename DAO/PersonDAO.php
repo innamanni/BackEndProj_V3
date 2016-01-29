@@ -28,6 +28,7 @@ class PersonDAO extends BaseDAO{
 	{
 		$this->con=$tempCon;
 	}
+<<<<<<< HEAD
 	public static function getPersonDTO($tempID, $tempLname, $tempFname, $tempEmail){
 		$tempPersonDTO = new PersonDTO($tempID, $tempLname, $tempFname, $tempEmail);
 		return $tempPersonDTO;
@@ -139,5 +140,34 @@ class PersonDAO extends BaseDAO{
 		$stmt->execute();
 		return $person_id;
 	}
+=======
+	function __construct() {
+		//$this->setCon($dbCon);
+		//$this->setDTO($addrDTO); 
+		//$this->setID($addrID); 
+	}
+	function createPerson($con, $dto) 
+	{
+			try {
+				$f_name = $dto->getFname();
+				$l_name = $dto->getLname();
+				$email_addr = $dto->getEmail();
+				$stmt = $con->prepare("INSERT INTO person (l_name, f_name, email_addr) VALUES (:l_name, :f_name, :email_addr)");
+				$stmt->bindParam(':l_name', $l_name);
+				$stmt->bindParam(':f_name', $f_name);
+				$stmt->bindParam(':email_addr', $email_addr);
+				$stmt->execute();
+				//echo '<br><br>Hello from AddressDAO with PDO prepared statement<br><br>';
+				$person_id = $con->lastInsertId();
+				//echo 'address_id: ' . $address_id . '<br><br>';
+				//var_dump($dto);
+			}
+			catch(PDOException $e)
+			{
+				//echo "Error: " . $e->getMessage();
+			}
+			return $person_id;
+	}
+>>>>>>> origin/master
 }
 ?>
