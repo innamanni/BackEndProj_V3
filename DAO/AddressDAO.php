@@ -59,7 +59,6 @@ class AddressDAO extends BaseDAO{
 	public static function createAddress($con, $dto) 
 	{
 		$person_id = $dto->getPersonID();
-		//$address_id = "";
 		$street1 = $dto->getStreet1();
 		$street2 = $dto->getStreet2();
 		$city = $dto->getCity();
@@ -76,7 +75,7 @@ class AddressDAO extends BaseDAO{
 		$stmt->bindParam(':person_id', $person_id);
 		
 		$stmt->execute();
-		//$address_id = $con->lastInsertId();
+		$address_id = $con->lastInsertId();
 
 		return $address_id;
 	}

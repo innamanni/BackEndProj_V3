@@ -10,5 +10,7 @@ include "DTO/AddressDTO.php";
 include "DAO/AddressDAO.php";
 include 'DTO/ResultDTO.php';
 $progrManager = new programManager();
-$progrManager->readPerson();
+$personListDTO = $progrManager->readPerson();
+$json = json_encode($personListDTO);
+echo $json;
 ?>

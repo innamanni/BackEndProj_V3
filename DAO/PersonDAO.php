@@ -28,8 +28,8 @@ class PersonDAO extends BaseDAO{
 	{
 		$this->con=$tempCon;
 	}
-	public static function getPersonDTO($tempID, $tempLname, $tempFname, $tempEmail, $tempPhoneDTO, $tempAddrDTO){
-		$tempPersonDTO = new PersonDTO($tempID, $tempLname, $tempFname, $tempEmail, $tempPhoneDTO, $tempAddrDTO);
+	public static function getPersonDTO($tempID, $tempLname, $tempFname, $tempEmail){
+		$tempPersonDTO = new PersonDTO($tempID, $tempLname, $tempFname, $tempEmail);
 		return $tempPersonDTO;
 	}
 	function __construct() {
@@ -56,6 +56,18 @@ class PersonDAO extends BaseDAO{
 	public static function readPersonList($con)
 	{
 		$personList = array();
+		$sql = "select * from person;";
+		foreach ($con->query($sql) as $row)
+		{	
+			$tempPersonDTO = PersonDAO::getPersonDTO($row['person_id'], $row['l_name'], $row['f_name'], $row['email_addr']);
+			$personList[count($personList)] = $tempPersonDTO;
+		}
+		return $personList;
+	}
+	/*
+	public static function readFullPersonList($con)
+	{
+		$personList = array();
 		$sql = "select * from person, phone, phone_type, address where person.person_id = phone.person_id and phone.phone_type_id = phone_type.phone_type_id and person.person_id = address.person_id;";
 		foreach ($con->query($sql) as $row)
 		{	
@@ -67,6 +79,7 @@ class PersonDAO extends BaseDAO{
 		}
 		return $personList;
 	}
+	*/
 	public static function deletePerson($con, $person_id)
 	{
 		$numOfPersons = count($person_id);
@@ -89,15 +102,30 @@ class PersonDAO extends BaseDAO{
 	}
 	public static function getPerson($con, $person_id)
 	{
-		$sql = "select * from person, phone, phone_type, address where person.person_id = phone.person_id AND person.person_id = address.person_id AND phone.phone_type_id = phone_type.phone_type_id AND person.person_id = $person_id;";
-		foreach ($con->query($sql) as $row)
-		{	
-			$tempAddressDTO = AddressDAO::getAddressDTO($row['street1'], $row['street2'], $row['city'], $row['state_id'], $row['zip'], $row['address_id'], $row['person_id']);
-			$tempPhoneDTO = PhoneDAO::getPhoneDTO($row['phone_id'], $row['person_id'], $row['phone_type_id'], $row['phone_number'], $row['phone_type']);
-			$tempPersonDTO = PersonDAO::getPersonDTO($row['person_id'], $row['l_name'], $row['f_name'], $row['email_addr'], $tempPhoneDTO,  $tempAddressDTO);
-		}
+		$sql = "select * from person where person.person_id = $person_id;";
+		$stmt = $con->query($sql);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		$tempPersonDTO = PersonDAO::getPersonDTO($row['person_id'], $row['l_name'], $row['f_name'], $row['email_addr']);
+
 		return $tempPersonDTO;
 	}
+	/*
+	public static function getFullPerson($con, $person_id)
+	{
+		$sql = "select * from person, phone, phone_type, address where person.person_id = phone.person_id AND person.person_id = address.person_id AND phone.phone_type_id = phone_type.phone_type_id AND person.person_id = $person_id;";
+		$stmt = $con->query($sql);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		$tempAddressDTO = AddressDAO::getAddressDTO($row['street1'], $row['street2'], $row['city'], $row['state_id'], $row['zip'], $row['address_id'], $row['person_id']);
+		$tempPhoneDTO = PhoneDAO::getPhoneDTO($row['phone_id'], $row['person_id'], $row['phone_type_id'], $row['phone_number'], $row['phone_type']);
+		$tempPersonDTO = PersonDAO::getPersonDTO($row['person_id'], $row['l_name'], $row['f_name'], $row['email_addr'], $tempPhoneDTO,  $tempAddressDTO);
+
+		return $tempPersonDTO;
+	}
+	*/
 	public static function updatePerson($con, $personDTO)
 	{
 		$person_id = $personDTO->getID();

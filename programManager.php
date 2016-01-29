@@ -13,19 +13,18 @@ class ProgramManager
 		try{
 			self::openConn();
 			$this->con->beginTransaction();
-			$this->person_dto = $tempPersonDTO;
 			$person_id = PersonDAO::createPerson($this->con, $tempPersonDTO);
-			$phoneDTO = $this->person_dto->getPhoneDTO();
+			//CHECK HERE IF DTOs ARE EMPTY???
+			$phoneDTO = $tempPersonDTO->getPhoneDTO();
 			$phoneDTO->setPersonID($person_id);
-			$addressDTO = $this->person_dto->getAddrDTO();
+			$addressDTO = $tempPersonDTO->getAddrDTO();
 			$addressDTO->setPersonID($person_id);
 			$phone_id = PhoneDAO::createPhone($this->con, $phoneDTO);
 			$address_id = AddressDAO::createAddress($this->con, $addressDTO);
-			$return = new ResultDTO($person_id, "CREATED");
-			$json = json_encode($return);
-			echo $json;
+			$return = new PersonsDTO($person_id, "CREATED");
 			$this->con->commit();
 			self::closeConn();
+			return $return;
 		}
 		catch(PDOException $e)
 		{
@@ -34,13 +33,10 @@ class ProgramManager
 	}
 	function readPerson(){
 	    self::openConn();
-		//$addrDTO;
-		//$phoneDTO;
-		$result = PersonDAO::readPersonList($this->con);
-		$return = new ResultDTO($result, "READ");
-		$json = json_encode($return);
-		echo $json;
+		$personList = PersonDAO::readPersonList($this->con);
+		$personListDTO = new PersonsDTO($personList, "READ");
 		self::closeConn();
+		return $personListDTO;
 	}
 	function deletePerson($person_id) {
 		self::openConn();
@@ -88,7 +84,7 @@ class ProgramManager
 			$person_id = "person insert Error: " . $e->getMessage();
 			$this->con->rollBack();
 		}
-	}
+	}/*
 	function getPhoneTypes(){
 		self::openConn();
 		$this->phoneDAO = new PhoneDAO();
@@ -140,8 +136,10 @@ class ProgramManager
 		$json = json_encode($stateList);
 		echo $json;
 	}
+	*/
 	function closeConn() {
 		$this->db->db_close($this->con);
 	}
+
 }
 ?>

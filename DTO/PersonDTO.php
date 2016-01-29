@@ -6,7 +6,18 @@ class PersonDTO extends BaseDTO
 	var $f_name;
 	var $l_name;
 	var $email_addr;
-	
+	public static function hidrateSelf($json_str){
+		if(!empty($json_str->{"fname"})){$fname = $json_str->{"fname"};}
+		else{$fname = "";}
+		if(!empty($json_str->{"lname"})){$lname = $json_str->{"lname"};}
+		else{$lname = "";}
+		if(!empty($json_str->{"email"})){$email = $json_str->{"email"};}
+		else{$email = "";}
+		if(!empty($json_str->{"person_id"})){$person_id = $json_str->{"person_id"};}
+		else{$person_id = "";}
+		$personDTO = new PersonDTO($person_id, $lname, $fname, $email);
+		return $personDTO;
+	}
 	function getID()
 	{
 		return $this->person_id;
@@ -56,14 +67,12 @@ class PersonDTO extends BaseDTO
 	{
 		$this->addrDTO=$tempAddrDTO;
 	}
-	function __construct($tempID, $tempLname, $tempFname, $tempEmail, $tempPhoneDTO, $tempAddrDTO)
+	function __construct($tempID, $tempLname, $tempFname, $tempEmail)
 	{
 		$this->setID($tempID);
 		$this->setLname($tempLname); 
 		$this->setFname($tempFname); 
 		$this->setEmail($tempEmail); 
-		$this->setPhoneDTO($tempPhoneDTO);
-		$this->setAddrDTO($tempAddrDTO);
 	}
 }
 ?>
