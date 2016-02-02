@@ -16,5 +16,5 @@ require_once 'DTO/PersonsDTO.php';
 $data_back = json_decode(file_get_contents('php://input'));
 $person_id = $data_back->{"person_id"};
 $progrManager = new programManager();
-$progrManager->updatePerson($person_id);
+$progrManager->loadOnePerson($person_id);
 ?>

@@ -1,38 +1,13 @@
 <?php
 require_once 'DAO/BaseDAO.php';
+
 class PersonDAO extends BaseDAO{
-	var $con;
-	var $dto;
-	var $person_id;
-	function getID()
-	{
-		return $this->person_id;
-	}
-	function setID($tempID)
-	{
-		$this->person_id=$tempID;
-	}
-	function getDTO()
-	{
-		return $this->dto;
-	}
-	function setDTO($tempDTO)
-	{
-		$this->dto=$tempDTO;
-	}
-	function getCon()
-	{
-		return $this->con;
-	}
-	function setCon($tempCon)
-	{
-		$this->con=$tempCon;
-	}
 	public static function getPersonDTO($tempID, $tempLname, $tempFname, $tempEmail){
-		$tempPersonDTO = new PersonDTO($tempID, $tempLname, $tempFname, $tempEmail);
-		return $tempPersonDTO;
+		$personDTO = new PersonDTO($tempID, $tempLname, $tempFname, $tempEmail);
+		return $personDTO;
 	}
-	function __construct() {
+	
+	private function __construct() {
 		//$this->setCon($dbCon);
 		//$this->setDTO($personDTO); 
 		//$this->setID($personID); 
@@ -86,7 +61,7 @@ class PersonDAO extends BaseDAO{
 		$sql_person = "delete from person where person_id in (";
 		for ($i = 0; $i < $numOfPersons; $i++) {
 				$sql_person .= ":id" . $i;
-				if ($numOfPersons - $i > 1) {$sql .= ',';}
+				if ($numOfPersons - $i > 1) {$sql_person .= ',';}
 		}
 		$sql_person .= ")";
 		
@@ -96,9 +71,7 @@ class PersonDAO extends BaseDAO{
 			$stmt->bindParam(':id' . $i, $person_id[$i]);
 		}
 		$stmt->execute();
-		$con->commit();
-		echo "Record deleted successfully";
-		return $sql_person;
+		return $person_id;
 	}
 	public static function loadPerson($con, $person_id)
 	{

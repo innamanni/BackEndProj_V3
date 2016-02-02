@@ -1,17 +1,24 @@
 <?php
+/**
+ * 
+ **/
 class ProgramManager
 {
 	const SERVERNAME = "localhost";
 	const USERNAME = "root";
 	const PASSWORD = "";
 	const DBNAME = "mannitechcorp";
+	
 	function openConn(){
 		$this->db = new Database(self::SERVERNAME, self::USERNAME, self::PASSWORD, self::DBNAME);
 		$this->con = $this->db->db_connect();
 	}
+	
 	function createPerson($tempPersonDTO) {
+		$return = null;
+		self::openConn();
+		
 		try{
-			self::openConn();
 			$this->con->beginTransaction();
 			$person_id = PersonDAO::createPerson($this->con, $tempPersonDTO);
 			$phoneDTO = $tempPersonDTO->getPhoneDTO();
@@ -22,21 +29,26 @@ class ProgramManager
 			$address_id = AddressDAO::createAddress($this->con, $addressDTO);
 			$return = new PersonsDTO($person_id, "CREATED");
 			$this->con->commit();
-			self::closeConn();
-			return $return;
+			
 		}
 		catch(PDOException $e)
 		{
 			$this->con->rollBack();
 		}
+		self::closeConn();
+		return $return;	
 	}
+	
 	function loadPersonDetails($personID){
 		self::openConn();
-		$personDTO = PersonDAO::getPersonDTO($personID, "", "", "");
-		$phoneDTO = PhoneDAO::loadPhone($this->con, $personID);
-		$addressDTO = AddressDAO::loadAddress($this->con, $personID);
-		$personDTO->setPhoneDTO($phoneDTO);
-		$personDTO->setAddrDTO($addressDTO);
+		try 
+		{
+			$personDTO = PersonDAO::getPersonDTO($personID, "", "", "");
+			$phoneDTO = PhoneDAO::loadPhone($this->con, $personID);
+			$addressDTO = AddressDAO::loadAddress($this->con, $personID);
+			$personDTO->setPhoneDTO($phoneDTO);
+			$personDTO->setAddrDTO($addressDTO);
+		}catch(PDOException $e){ /* guarantees db con close */}
 		self::closeConn();
 		return $personDTO;
 	}
@@ -63,15 +75,18 @@ class ProgramManager
 		}
 		catch(PDOException $e)
 		{
-			$sql_phone = "<br>" . $e->getMessage();
+			$error_msg = $e->getMessage();
 			$this->con->rollBack();
 		}
 	}
-	function updatePerson($personID){
+	function loadOnePerson($personID){
 		self::openConn();
-		$result = PersonDAO::loadPerson($this->con, $personID);
-		$return = new ResultDTO($result, "DISPLAYED");
-		$json = json_encode($return);
+		$personDTO = PersonDAO::loadPerson($this->con, $personID);
+		$phoneDTO = PhoneDAO::loadPhone($this->con, $personID);
+		$addressDTO = AddressDAO::loadAddress($this->con, $personID);
+		$personDTO->setPhoneDTO($phoneDTO);
+		$personDTO->setAddrDTO($addressDTO);
+		$json = json_encode($personDTO);
 		echo $json;
 		self::closeConn();
 	}

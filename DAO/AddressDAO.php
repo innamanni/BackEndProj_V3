@@ -96,7 +96,7 @@ class AddressDAO extends BaseDAO{
 		$sql_address = "delete from address where person_id in (";
 		for ($i = 0; $i < $numOfPersons; $i++) {
 				$sql_address .= ":id" . $i;
-				if ($numOfPersons - $i > 1) {$sql .= ',';}
+				if ($numOfPersons - $i > 1) {$sql_address .= ',';}
 		}
 		$sql_address .= ")";
 		$stmt = $con->prepare($sql_address);
@@ -105,7 +105,6 @@ class AddressDAO extends BaseDAO{
 			$stmt->bindParam(':id' . $i, $person_id[$i]);
 		}
 		$stmt->execute();
-		echo "Record deleted successfully";
 		return $sql_address;
 	}
 	function getAddress($con, $address_id)
