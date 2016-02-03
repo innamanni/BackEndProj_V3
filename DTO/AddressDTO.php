@@ -1,5 +1,5 @@
 <?php
-require_once 'DTO/BaseDTO.php';
+require_once '../DTO/BaseDTO.php';
 class AddressDTO extends BaseDTO
 {
 	//var $address_id = "";
@@ -9,24 +9,16 @@ class AddressDTO extends BaseDTO
 	var $city;
 	var $state_id;
 	var $zip;
-	//$tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID
-	public static function hidrateSelf($json_str){
-		if(!empty($json_str->{"street1"})){$street1 = $json_str->{"street1"};}
-		else{$street1 = "";}
-		if(!empty($json_str->{"street2"})){$street2 = $json_str->{"street2"};}
-		else{$street2 = "";}
-		if(!empty($json_str->{"city"})){$city = $json_str->{"city"};}
-		else{$city = "";}
-		if(!empty($json_str->{"state_id"})){$state_id = $json_str->{"state_id"};}
-		else{$state_id = "";}
-		if(!empty($json_str->{"zip"})){$zip = $json_str->{"zip"};}
-		else{$zip = "";}
-		if(!empty($json_str->{"address_id"})){$address_id = $json_str->{"address_id"};}
-		else{$address_id = "";}
-		if(!empty($json_str->{"person_id"})){$person_id = $json_str->{"person_id"};}
-		else{$person_id = "";}
-		$addressDTO = new AddressDTO($street1, $street2, $city, $state_id, $zip, $address_id, $person_id);
-		return $addressDTO;
+	
+	function __construct($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID)
+	{
+	    $this->setPersonID($tempPersonID);
+		$this->setAddrID($tempAddrID);
+		$this->setStreet1($tempStreet1); 
+		$this->setStreet2($tempStreet2); 
+		$this->setCity($tempCity); 
+		$this->setStateID($tempStateID);
+		$this->setZip($tempZip);
 	}
 	
 	function getPersonID()
@@ -100,15 +92,24 @@ class AddressDTO extends BaseDTO
 		$this->zip=$tempZip;
 	}
 	
-	function __construct($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID)
+	public static function hydrateSelf($json_str)
 	{
-	    $this->setPersonID($tempPersonID);
-		$this->setAddrID($tempAddrID);
-		$this->setStreet1($tempStreet1); 
-		$this->setStreet2($tempStreet2); 
-		$this->setCity($tempCity); 
-		$this->setStateID($tempStateID);
-		$this->setZip($tempZip);
+		if(!empty($json_str->{"street1"})){$street1 = $json_str->{"street1"};}
+		else{$street1 = "";}
+		if(!empty($json_str->{"street2"})){$street2 = $json_str->{"street2"};}
+		else{$street2 = "";}
+		if(!empty($json_str->{"city"})){$city = $json_str->{"city"};}
+		else{$city = "";}
+		if(!empty($json_str->{"state_id"})){$state_id = $json_str->{"state_id"};}
+		else{$state_id = "";}
+		if(!empty($json_str->{"zip"})){$zip = $json_str->{"zip"};}
+		else{$zip = "";}
+		if(!empty($json_str->{"address_id"})){$address_id = $json_str->{"address_id"};}
+		else{$address_id = "";}
+		if(!empty($json_str->{"person_id"})){$person_id = $json_str->{"person_id"};}
+		else{$person_id = "";}
+		$addressDTO = new AddressDTO($street1, $street2, $city, $state_id, $zip, $address_id, $person_id);
+		return $addressDTO;
 	}
 }
 ?>

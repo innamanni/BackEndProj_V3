@@ -1,9 +1,15 @@
 <?php
-require_once 'DTO/BaseDTO.php';
+require_once '../DTO/BaseDTO.php';
 class ResultDTO extends BaseDTO
 {
 	var $result;
 	var $message;
+	
+	function __construct($tempResult, $action)
+	{
+		$this->setResult($tempResult); 
+		$this->setMessage($action);
+	}
 	
 	function getResult()
 	{
@@ -23,12 +29,6 @@ class ResultDTO extends BaseDTO
 	function getMessage()
 	{
 		return $this->message;
-	}
-	
-	function __construct($tempResult, $action)
-	{
-		$this->setResult($tempResult); 
-		$this->setMessage($action);
 	}
 }
 ?>

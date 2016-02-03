@@ -1,37 +1,7 @@
 <?php
-require_once 'DAO/BaseDAO.php';
+require_once '../DAO/BaseDAO.php';
 class PhoneDAO extends BaseDAO{
-	var $con;
-	var $dto;
-	var $phone_number;
-	var $person_id;
-	var $phone_id;
-	var $phone_type_id;
-	var $phone_type;
-	function getID()
-	{
-		return $this->person_id;
-	}
-	function setID($tempID)
-	{
-		$this->person_id=$tempID;
-	}
-	function getDTO()
-	{
-		return $this->dto;
-	}
-	function setDTO($tempDTO)
-	{
-		$this->dto=$tempDTO;
-	}
-	function getCon()
-	{
-		return $this->con;
-	}
-	function setCon($tempCon)
-	{
-		$this->con=$tempCon;
-	}
+
 	function __construct() {
 		//$this->setCon($dbCon);
 		//$this->setDTO($personDTO); 
@@ -52,7 +22,6 @@ class PhoneDAO extends BaseDAO{
 		$stmt->execute();
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
 		
-		//$tempPhoneID, $tempPersonID, $tempPhoneTypeID, $tempPhoneNum, $tempPhoneType
 		$tempPhoneDTO = PhoneDAO::getPhoneDTO($row['phone_id'], $row['person_id'], $row['phone_type_id'], $row['phone_number'], "");
 
 		return $tempPhoneDTO;
@@ -75,7 +44,7 @@ class PhoneDAO extends BaseDAO{
 			
 			return $phone_id;
 	}
-	public static function readPhoneTypeList($con)
+	public static function loadPhoneTypeList($con)
 	{
 		$phone_id = "";
 		$person_id = "";

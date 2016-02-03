@@ -1,9 +1,15 @@
 <?php
-require_once 'DTO/BaseDTO.php';
+require_once '../DTO/BaseDTO.php';
 class StatesDTO extends BaseDTO
 {
 	var $statesList;
 	var $message;
+	
+	function __construct($tempStatesList, $msg)
+	{
+		$this->setStatesList($tempStatesList); 
+		$this->setMessage($msg);
+	}
 	
 	public static function hidrateSelf($json_str){}
 	
@@ -25,12 +31,6 @@ class StatesDTO extends BaseDTO
 	function getMessage()
 	{
 		return $this->message;
-	}
-	
-	function __construct($tempStatesList, $msg)
-	{
-		$this->setStatesList($tempStatesList); 
-		$this->setMessage($msg);
 	}
 }
 ?>

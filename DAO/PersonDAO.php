@@ -1,17 +1,19 @@
 <?php
-require_once 'DAO/BaseDAO.php';
+require_once '../DAO/BaseDAO.php';
 
 class PersonDAO extends BaseDAO{
+	
+	function __construct() {
+		//$this->setCon($dbCon);
+		//$this->setDTO($personDTO); 
+		//$this->setID($personID); 
+	}
+	
 	public static function getPersonDTO($tempID, $tempLname, $tempFname, $tempEmail){
 		$personDTO = new PersonDTO($tempID, $tempLname, $tempFname, $tempEmail);
 		return $personDTO;
 	}
 	
-	private function __construct() {
-		//$this->setCon($dbCon);
-		//$this->setDTO($personDTO); 
-		//$this->setID($personID); 
-	}
 	public static function createPerson($con, $dto) 
 	{
 			$person_id = "";
@@ -28,6 +30,7 @@ class PersonDAO extends BaseDAO{
 
 			return $person_id;
 	}
+	
 	public static function loadPersonsList($con)
 	{
 		$personList = array();
@@ -39,6 +42,7 @@ class PersonDAO extends BaseDAO{
 		}
 		return $personList;
 	}
+	
 	/*
 	public static function readFullPersonList($con)
 	{
@@ -55,6 +59,7 @@ class PersonDAO extends BaseDAO{
 		return $personList;
 	}
 	*/
+	
 	public static function deletePerson($con, $person_id)
 	{
 		$numOfPersons = count($person_id);
@@ -73,6 +78,7 @@ class PersonDAO extends BaseDAO{
 		$stmt->execute();
 		return $person_id;
 	}
+	
 	public static function loadPerson($con, $person_id)
 	{
 		$sql = "select * from person where person.person_id = $person_id;";
@@ -84,6 +90,7 @@ class PersonDAO extends BaseDAO{
 
 		return $tempPersonDTO;
 	}
+	
 	/*
 	public static function getFullPerson($con, $person_id)
 	{
@@ -99,6 +106,7 @@ class PersonDAO extends BaseDAO{
 		return $tempPersonDTO;
 	}
 	*/
+	
 	public static function updatePerson($con, $personDTO)
 	{
 		$person_id = $personDTO->getID();

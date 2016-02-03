@@ -1,4 +1,5 @@
 <?php
+require_once '../DAO/BaseDAO.php';
 class StateDAO extends BaseDAO {
 	public static function getStateDTO($state_id, $state_abbr, $state_descr){
 		$tempStateDTO = new StateDTO($state_id, $state_abbr, $state_descr);

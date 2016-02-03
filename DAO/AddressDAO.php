@@ -1,42 +1,18 @@
 <?php
-require_once 'DAO/BaseDAO.php';
+require_once '../DAO/BaseDAO.php';
 class AddressDAO extends BaseDAO{
-	var $con;
-	var $dto;
-	var $address_id;
-	function getID()
-	{
-		return $this->address_id;
-	}
-	function setID($tempID)
-	{
-		$this->address_id=$tempID;
-	}
-	function getDTO()
-	{
-		return $this->dto;
-	}
-	function setDTO($tempDTO)
-	{
-		$this->dto=$tempDTO;
-	}
-	function getCon()
-	{
-		return $this->con;
-	}
-	function setCon($tempCon)
-	{
-		$this->con=$tempCon;
-	}
-	public static function getAddressDTO($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID){
-		$tempAddrDTO = new AddressDTO($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID);
-		return $tempAddrDTO;
-	}
+
 	function __construct() {
 		//$this->setCon($dbCon);
 		//$this->setDTO($addrDTO); 
 		//$this->setID($addrID); 
 	}
+	
+	public static function getAddressDTO($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID){
+		$tempAddrDTO = new AddressDTO($tempStreet1, $tempStreet2, $tempCity, $tempStateID, $tempZip, $tempAddrID, $tempPersonID);
+		return $tempAddrDTO;
+	}
+	
 	public static function loadAddress($con, $person_id)
 	{
 		$sql = "select * from address where person_id = $person_id;";

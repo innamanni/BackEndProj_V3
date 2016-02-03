@@ -1,5 +1,5 @@
 <?php
-require_once 'DTO/BaseDTO.php';
+require_once '../DTO/BaseDTO.php';
 class PersonDTO extends BaseDTO
 {
 	// instance variables
@@ -76,7 +76,8 @@ class PersonDTO extends BaseDTO
 	}
 	
 	// converts json to dto for self 
-	public static function hidrateSelf($json_str){
+	public static function hydrateSelf($json_str)
+	{
 		if(!empty($json_str->{"f_name"})){$fname = $json_str->{"f_name"};}
 		else{$fname = "";}
 		if(!empty($json_str->{"l_name"})){$lname = $json_str->{"l_name"};}

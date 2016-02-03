@@ -1,9 +1,15 @@
 <?php
-require_once 'DTO/BaseDTO.php';
+require_once '../DTO/BaseDTO.php';
 class PhoneTypesDTO extends BaseDTO
 {
 	var $phoneTypesList;
 	var $message;
+	
+	function __construct($tempPhoneTypesList, $msg)
+	{
+		$this->setPhoneTypesList($tempPhoneTypesList); 
+		$this->setMessage($msg);
+	}
 	
 	function getPhoneTypesList()
 	{
@@ -23,12 +29,6 @@ class PhoneTypesDTO extends BaseDTO
 	function getMessage()
 	{
 		return $this->message;
-	}
-	
-	function __construct($tempPhoneTypesList, $msg)
-	{
-		$this->setPhoneTypesList($tempPhoneTypesList); 
-		$this->setMessage($msg);
 	}
 }
 ?>

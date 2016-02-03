@@ -1,9 +1,15 @@
 <?php
-require_once 'DTO/BaseDTO.php';
+require_once '../DTO/BaseDTO.php';
 class PersonsDTO extends BaseDTO
 {
 	var $personList;
 	var $message;
+	
+	function __construct($tempPersonList, $msg)
+	{
+		$this->setPersonList($tempPersonList); 
+		$this->setMessage($msg);
+	}
 	
 	function getPersonList()
 	{
@@ -23,12 +29,6 @@ class PersonsDTO extends BaseDTO
 	function getMessage()
 	{
 		return $this->message;
-	}
-	
-	function __construct($tempPersonList, $msg)
-	{
-		$this->setPersonList($tempPersonList); 
-		$this->setMessage($msg);
 	}
 }
 ?>
