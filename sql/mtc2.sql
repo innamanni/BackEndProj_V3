@@ -1,15 +1,11 @@
-DROP TABLE IF EXISTS phone;
-DROP TABLE IF EXISTS address;
-DROP TABLE IF EXISTS person;
-DROP TABLE IF EXISTS state;
 DROP TABLE IF EXISTS phone_type;
-DROP TABLE IF EXISTS address_type;
-DROP TABLE IF EXISTS xref_role;
-DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS xref_contact;
 DROP TABLE IF EXISTS contact;
-DROP TABLE IF EXISTS company;
+DROP TABLE IF EXISTS phone;
+DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS address;
+DROP TABLE IF EXISTS address_type;
+DROP TABLE IF EXISTS state;
 
 CREATE TABLE person (
   person_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -114,7 +110,6 @@ CREATE TABLE address (
   city VARCHAR(20),
   zip INT(10),
   FOREIGN KEY (state_id) REFERENCES state(state_id),
-  person_id INT NOT NULL,
   FOREIGN KEY (person_id) REFERENCES person(person_id),
   created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by INT,
@@ -126,46 +121,6 @@ CREATE TABLE user (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   user_name VARCHAR(50), 
   password VARCHAR(50),
-  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by INT,
-  last_modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  last_modified_by INT
-);
-
-CREATE TABLE role (
-  role_id INT AUTO_INCREMENT PRIMARY KEY,
-  role_type VARCHAR(20),
-  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by INT,
-  last_modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  last_modified_by INT
-);
-
-CREATE TABLE xref_role (
-  user_id INT NOT NULL,
-  role_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES user(user_id),
-  FOREIGN KEY (role_id) REFERENCES role(role_id),
-  CONSTRAINT pk_usr_role PRIMARY KEY (user_id, role_id)
-);
-
-CREATE TABLE company (
-  company_id INT AUTO_INCREMENT PRIMARY KEY,
-  company_name VARCHAR(50),
-  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by INT,
-  last_modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  last_modified_by INT
-);
-
-CREATE TABLE xref_contact (
-  person_id INT NOT NULL,
-  company_id INT NOT NULL,
-  descr VARCHAR(50),
-  comment VARCHAR(500),
-  FOREIGN KEY (person_id) REFERENCES person(person_id),
-  FOREIGN KEY (company_id) REFERENCES company(company_id),
-  CONSTRAINT pk_comp_cont PRIMARY KEY (company_id, person_id),
   created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by INT,
   last_modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
